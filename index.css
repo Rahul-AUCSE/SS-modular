@@ -170,6 +170,10 @@ body.hovering-link .custom-cursor-follower {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
 }
 
+.header-nav.nav-hidden {
+  transform: translateY(-100%);
+}
+
 .brand-logo {
   font-family: var(--font-serif);
   font-size: 1.5rem;

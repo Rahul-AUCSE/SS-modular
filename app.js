@@ -48,21 +48,34 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // 2. HEADER NAV - STICKY GLASSMORPHISM
+  // 2. HEADER NAV - STICKY AUTO-HIDE ON SCROLL
   // ==========================================================================
   const header = document.querySelector('.header-nav');
   const scrollThreshold = 50;
+  let lastScrollY = window.scrollY;
   
-  function checkHeaderScroll() {
-    if (window.scrollY > scrollThreshold) {
+  function handleHeaderScroll() {
+    const currentScrollY = window.scrollY;
+    
+    // Add scrolled class for glassmorphism
+    if (currentScrollY > scrollThreshold) {
       header.classList.add('scrolled');
     } else {
       header.classList.remove('scrolled');
     }
+    
+    // Hide header on scroll down, show on scroll up
+    if (currentScrollY > lastScrollY && currentScrollY > 150) {
+      header.classList.add('nav-hidden');
+    } else {
+      header.classList.remove('nav-hidden');
+    }
+    
+    lastScrollY = currentScrollY;
   }
   
-  window.addEventListener('scroll', checkHeaderScroll);
-  checkHeaderScroll(); // Initialize on page load
+  window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+  handleHeaderScroll(); // Initialize on page load
 
   // Mobile Menu Toggle
   const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
