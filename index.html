@@ -43,6 +43,7 @@
         <li class="nav-item"><a href="#services">Services</a></li>
         <li class="nav-item"><a href="#process">Process</a></li>
         <li class="nav-item"><a href="#portfolio">Portfolio</a></li>
+        <li class="nav-item"><a href="#estimator">Estimator</a></li>
         <li class="nav-item"><a href="#testimonials">Voices</a></li>
         <li class="nav-item"><a href="#contact">Contact</a></li>
       </ul>
@@ -500,6 +501,122 @@
             <button class="testimonial-dot" role="tab" aria-selected="false" aria-label="Testimonial 3"></button>
           </div>
           
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       BUDGET ESTIMATOR SECTION
+       ========================================================================== -->
+    <section class="calculator-section" id="estimator">
+      <div class="section-grid">
+        <div class="section-header reveal-on-scroll" style="text-align: center; margin: 0 auto var(--spacing-lg) auto;">
+          <span class="section-label">Elegant Calculator</span>
+          <h2 class="section-title">Instant Premium Budget Estimator</h2>
+        </div>
+        
+        <div class="calculator-grid">
+          
+          <!-- Left: Selectors Card -->
+          <div class="calculator-selectors-card reveal-on-scroll">
+            
+            <!-- Step 1: Scope -->
+            <div class="calc-step" id="calc-step-1">
+              <h4 class="calc-step-title">01 / Select Spatial Scope</h4>
+              <div class="calc-options-grid">
+                <button class="calc-option-btn active" data-step="scope" data-value="kitchen" data-price="180000">
+                  <span class="calc-option-title">Modular Kitchen</span>
+                  <span class="calc-option-sub">Bespoke layouts</span>
+                </button>
+                <button class="calc-option-btn" data-step="scope" data-value="wardrobes" data-price="150000">
+                  <span class="calc-option-title">Bespoke Wardrobes</span>
+                  <span class="calc-option-sub">Luxury wardrobes</span>
+                </button>
+                <button class="calc-option-btn" data-step="scope" data-value="1bhk" data-price="350000">
+                  <span class="calc-option-title">1 BHK Residence</span>
+                  <span class="calc-option-sub">Full home fitout</span>
+                </button>
+                <button class="calc-option-btn" data-step="scope" data-value="2bhk" data-price="550000">
+                  <span class="calc-option-title">2 BHK Residence</span>
+                  <span class="calc-option-sub">Full home fitout</span>
+                </button>
+                <button class="calc-option-btn" data-step="scope" data-value="3bhk" data-price="750000">
+                  <span class="calc-option-title">3 BHK Residence</span>
+                  <span class="calc-option-sub">Full home fitout</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2: Finishes -->
+            <div class="calc-step" id="calc-step-2" style="margin-top: 3rem;">
+              <h4 class="calc-step-title">02 / Choose Material Finish</h4>
+              <div class="calc-options-grid">
+                <button class="calc-option-btn active" data-step="finish" data-value="matte" data-multiplier="1.0">
+                  <span class="calc-option-title">Premium HDHMR Matte</span>
+                  <span class="calc-option-sub">Sleek & high durability</span>
+                </button>
+                <button class="calc-option-btn" data-step="finish" data-value="acrylic" data-multiplier="1.25">
+                  <span class="calc-option-title">High-Gloss Acrylic</span>
+                  <span class="calc-option-sub">Ultra reflective skin</span>
+                </button>
+                <button class="calc-option-btn" data-step="finish" data-value="veneer" data-multiplier="1.45">
+                  <span class="calc-option-title">Natural Wood Veneer</span>
+                  <span class="calc-option-sub">Luxury organic grains</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 3: Hardware -->
+            <div class="calc-step" id="calc-step-3" style="margin-top: 3rem;">
+              <h4 class="calc-step-title">03 / Select Fittings & Hardware Tier</h4>
+              <div class="calc-options-grid">
+                <button class="calc-option-btn active" data-step="hardware" data-value="classic" data-multiplier="1.0">
+                  <span class="calc-option-title">Classic Precision</span>
+                  <span class="calc-option-sub">Soft-close systems</span>
+                </button>
+                <button class="calc-option-btn" data-step="hardware" data-value="luxury" data-multiplier="1.2">
+                  <span class="calc-option-title">European Luxury</span>
+                  <span class="calc-option-sub">Integrated Hettich / Blum</span>
+                </button>
+                <button class="calc-option-btn" data-step="hardware" data-value="sanctuary" data-multiplier="1.35">
+                  <span class="calc-option-title">Ultimate Sanctuary</span>
+                  <span class="calc-option-sub">Premium accessory trays</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Visual Estimation Output Card -->
+          <div class="calculator-results-card reveal-on-scroll delay-1">
+            <span class="results-tag">Live Budget Estimation</span>
+            <div class="results-value-wrapper">
+              <span class="results-label">Estimated Range</span>
+              <div class="results-price-range" id="calc-price-range">₹1,62,000 - ₹1,98,000</div>
+              <span class="results-taxes">*Subject to 18% GST and customization details</span>
+            </div>
+            
+            <div class="results-summary-block">
+              <h5 class="summary-title">Configuration Summary</h5>
+              <div class="summary-row">
+                <span>Scope:</span>
+                <strong id="summary-scope">Modular Kitchen</strong>
+              </div>
+              <div class="summary-row">
+                <span>Finish:</span>
+                <strong id="summary-finish">Premium HDHMR Matte</strong>
+              </div>
+              <div class="summary-row">
+                <span>Hardware:</span>
+                <strong id="summary-hardware">Classic Precision</strong>
+              </div>
+            </div>
+
+            <button class="btn-premium btn-premium-gold calc-cta-btn" id="calc-cta-submit">
+              Confirm & Book Consultation
+            </button>
+          </div>
+
         </div>
       </div>
     </section>

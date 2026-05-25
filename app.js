@@ -780,4 +780,121 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ==========================================================================
+  // 13. PREMIUM BUDGET ESTIMATOR LOGIC
+  // ==========================================================================
+  const calcOptionBtns = document.querySelectorAll('.calc-option-btn');
+  const priceRangeDisplay = document.getElementById('calc-price-range');
+  const sumScope = document.getElementById('summary-scope');
+  const sumFinish = document.getElementById('summary-finish');
+  const sumHardware = document.getElementById('summary-hardware');
+  const calcCtaSubmit = document.getElementById('calc-cta-submit');
+  
+  function calculateBudget() {
+    if (!priceRangeDisplay) return;
+    
+    // Find active selections
+    const activeScope = document.querySelector('.calc-option-btn[data-step="scope"].active');
+    const activeFinish = document.querySelector('.calc-option-btn[data-step="finish"].active');
+    const activeHardware = document.querySelector('.calc-option-btn[data-step="hardware"].active');
+    
+    if (!activeScope || !activeFinish || !activeHardware) return;
+    
+    const basePrice = parseInt(activeScope.getAttribute('data-price'), 10);
+    const finishMultiplier = parseFloat(activeFinish.getAttribute('data-multiplier'));
+    const hardwareMultiplier = parseFloat(activeHardware.getAttribute('data-multiplier'));
+    
+    // Core math
+    const baseEstimation = basePrice * finishMultiplier * hardwareMultiplier;
+    const lowRange = Math.round(baseEstimation * 0.9);
+    const highRange = Math.round(baseEstimation * 1.1);
+    
+    // Format to Indian Rupees currency format (e.g. ₹2,50,000)
+    function formatRupees(amount) {
+      return '₹' + amount.toLocaleString('en-IN');
+    }
+    
+    // Update live displays
+    priceRangeDisplay.textContent = `${formatRupees(lowRange)} - ${formatRupees(highRange)}`;
+    
+    // Update visual summaries
+    sumScope.textContent = activeScope.querySelector('.calc-option-title').textContent;
+    sumFinish.textContent = activeFinish.querySelector('.calc-option-title').textContent;
+    sumHardware.textContent = activeHardware.querySelector('.calc-option-title').textContent;
+  }
+  
+  // Bind click events to options
+  calcOptionBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const step = btn.getAttribute('data-step');
+      
+      // Remove active class from sibling options inside the same step group
+      document.querySelectorAll(`.calc-option-btn[data-step="${step}"]`).forEach(sibling => {
+        sibling.classList.remove('active');
+      });
+      
+      // Add active class to clicked option
+      btn.classList.add('active');
+      
+      // Trigger live recalculation
+      calculateBudget();
+    });
+  });
+  
+  // Bind Estimator CTA to Contact Form integration
+  if (calcCtaSubmit) {
+    calcCtaSubmit.addEventListener('click', () => {
+      const activeScope = document.querySelector('.calc-option-btn[data-step="scope"].active');
+      const scopeVal = activeScope.getAttribute('data-value');
+      const scopeName = activeScope.querySelector('.calc-option-title').textContent;
+      
+      const finishName = document.querySelector('.calc-option-btn[data-step="finish"].active .calc-option-title').textContent;
+      const hardwareName = document.querySelector('.calc-option-btn[data-step="hardware"].active .calc-option-title').textContent;
+      const calculatedRange = priceRangeDisplay.textContent;
+      
+      // Scroll smoothly to contact section
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+      
+      // Auto-populate form elements
+      const formSpace = document.getElementById('form-space');
+      const customSelectVal = document.getElementById('custom-select-value');
+      const formMessage = document.getElementById('form-message');
+      
+      if (formSpace) {
+        // Map calculator value to form select values
+        let mappedVal = '';
+        if (scopeVal === 'kitchen') mappedVal = 'kitchen';
+        else if (scopeVal === 'wardrobes') mappedVal = 'wardrobes';
+        else mappedVal = 'full-home';
+        
+        formSpace.value = mappedVal;
+        formSpace.dispatchEvent(new Event('change'));
+        
+        // Sync custom select display text
+        if (customSelectVal) {
+          const matchedOption = document.querySelector(`.custom-option[data-value="${mappedVal}"]`);
+          if (matchedOption) {
+            customSelectVal.textContent = matchedOption.textContent;
+            customSelectVal.classList.remove('placeholder');
+            
+            // Sync selection styling
+            document.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+            matchedOption.classList.add('selected');
+          }
+        }
+      }
+      
+      // Populate custom brief message textarea
+      if (formMessage) {
+        formMessage.value = `Hi, I used your Instant Budget Estimator and calculated an estimated budget range of ${calculatedRange} for my ${scopeName}.\n\nConfiguration Detail:\n- Scope: ${scopeName}\n- Finish: ${finishName}\n- Fittings: ${hardwareName}\n\nI would like to schedule an expert design session at your studio to discuss plans.`;
+      }
+    });
+  }
+  
+  // Run once on load to initialize defaults
+  calculateBudget();
+
 });

@@ -2163,3 +2163,206 @@ section {
     height: 48px;
   }
 }
+
+/* ==========================================================================
+   BUDGET ESTIMATOR STYLES
+   ========================================================================== */
+.calculator-section {
+  border-top: 1px solid var(--warm-stone);
+  background-color: var(--bg-primary);
+}
+
+.calculator-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 5%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.calculator-selectors-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--warm-stone-light);
+  border-radius: 6px;
+  padding: 3.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.01);
+}
+
+.calc-step-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-gold);
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--warm-stone-light);
+  padding-bottom: 0.8rem;
+}
+
+.calc-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.2rem;
+}
+
+.calc-option-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--warm-stone);
+  border-radius: 4px;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-fast);
+  width: 100%;
+}
+
+.calc-option-btn:hover {
+  border-color: var(--accent-gold);
+  background-color: rgba(var(--accent-gold-rgb), 0.01);
+}
+
+.calc-option-btn.active {
+  border-color: var(--accent-gold);
+  background-color: rgba(var(--accent-gold-rgb), 0.04);
+  box-shadow: 0 5px 15px rgba(var(--accent-gold-rgb), 0.04);
+}
+
+.calc-option-title {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+  transition: var(--transition-fast);
+}
+
+.calc-option-sub {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.calc-option-btn.active .calc-option-title {
+  color: var(--accent-gold-dark);
+}
+
+/* Results Output Card */
+.calculator-results-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--warm-stone-light);
+  border-top: 4px solid var(--accent-gold);
+  border-radius: 6px;
+  padding: 3.5rem;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.03);
+  position: sticky;
+  top: 100px;
+}
+
+.results-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent-gold);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.results-value-wrapper {
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--warm-stone-light);
+  padding-bottom: 2rem;
+}
+
+.results-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.results-price-range {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.results-taxes {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.results-summary-block {
+  margin-bottom: 3rem;
+}
+
+.summary-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+  margin-bottom: 1.2rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--warm-stone-light);
+  font-size: 0.9rem;
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+}
+
+.summary-row span {
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.summary-row strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.calc-cta-btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .calculator-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .calculator-results-card {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .calculator-selectors-card,
+  .calculator-results-card {
+    padding: 2.2rem;
+  }
+  
+  .calc-options-grid {
+    grid-template-columns: 1fr;
+  }
+}
