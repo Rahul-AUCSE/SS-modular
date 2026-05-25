@@ -894,6 +894,95 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   
+  // ==========================================================================
+  // 14. ROLLING WORDS ANIMATION FOR PREMIUM ESTIMATOR TITLE
+  // ==========================================================================
+  const rollingContainer = document.querySelector('.rolling-words-container');
+  const rollingWords = document.querySelectorAll('.rolling-word');
+  
+  if (rollingContainer && rollingWords.length > 0) {
+    let currentWordIndex = 0;
+    
+    function updateRollingContainerWidth() {
+      const activeWord = rollingWords[currentWordIndex];
+      if (activeWord) {
+        const width = activeWord.getBoundingClientRect().width;
+        rollingContainer.style.width = `${width}px`;
+      }
+    }
+    
+    function rotateRollingWords() {
+      const currentWord = rollingWords[currentWordIndex];
+      if (!currentWord) return;
+      currentWord.classList.remove('active');
+      currentWord.classList.add('exit');
+      
+      // Calculate next index
+      currentWordIndex = (currentWordIndex + 1) % rollingWords.length;
+      
+      const nextWord = rollingWords[currentWordIndex];
+      if (nextWord) {
+        nextWord.classList.remove('exit');
+        nextWord.classList.add('active');
+      }
+      
+      // Smoothly update the container width to match the new word
+      updateRollingContainerWidth();
+      
+      // Clean up exit class after animation completes (600ms matching CSS transition)
+      setTimeout(() => {
+        currentWord.classList.remove('exit');
+      }, 600);
+    }
+    
+    // Initial setup: Wait a small delay for fonts to load and render
+    setTimeout(() => {
+      updateRollingContainerWidth();
+    }, 300);
+    
+    // Recalculate width on resize
+    window.addEventListener('resize', updateRollingContainerWidth);
+    
+    // Roll the word every 1.8 seconds (1.8s gives a perfect 1.2s readability + 0.6s animation flow)
+    setInterval(rotateRollingWords, 1800);
+  }
+
+  // ==========================================================================
+  // 15. FAQ ACCORDION INTERACTION
+  // ==========================================================================
+  const faqTriggers = document.querySelectorAll('.faq-trigger');
+  
+  faqTriggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+      const panel = trigger.nextElementSibling;
+      
+      // Close other panels if open (keeping it extremely clean and premium)
+      faqTriggers.forEach(otherTrigger => {
+        if (otherTrigger !== trigger && otherTrigger.getAttribute('aria-expanded') === 'true') {
+          otherTrigger.setAttribute('aria-expanded', 'false');
+          const otherPanel = otherTrigger.nextElementSibling;
+          if (otherPanel) {
+            otherPanel.style.maxHeight = null;
+          }
+        }
+      });
+      
+      // Toggle current panel
+      if (isExpanded) {
+        trigger.setAttribute('aria-expanded', 'false');
+        if (panel) {
+          panel.style.maxHeight = null;
+        }
+      } else {
+        trigger.setAttribute('aria-expanded', 'true');
+        if (panel) {
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+        }
+      }
+    });
+  });
+
   // Run once on load to initialize defaults
   calculateBudget();
 
