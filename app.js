@@ -281,27 +281,11 @@ document.addEventListener('DOMContentLoaded', () => {
   checkTimelineProgress();
 
   // ==========================================================================
-  // 8. PARALLAX EFFECTS (ABOUT STACK, GALLERY MASONRY)
+  // 8. PARALLAX EFFECTS (GALLERY MASONRY)
   // ==========================================================================
-  const aboutImgPrimary = document.querySelector('.about-img-primary');
-  const aboutImgSecondary = document.querySelector('.about-img-secondary');
   const galleryItems = document.querySelectorAll('.gallery-item');
   
   function handleParallax() {
-    const scrollY = window.scrollY;
-    
-    // About image stack opposing movement
-    if (aboutImgPrimary && aboutImgSecondary) {
-      const aboutRect = document.querySelector('.about-section').getBoundingClientRect();
-      const aboutInView = (aboutRect.top < window.innerHeight) && (aboutRect.bottom > 0);
-      
-      if (aboutInView) {
-        const offset = (window.innerHeight - aboutRect.top) * 0.05;
-        aboutImgPrimary.style.transform = `translate3d(0, ${-offset}px, 0)`;
-        aboutImgSecondary.style.transform = `translate3d(0, ${offset * 1.5}px, 0)`;
-      }
-    }
-    
     // Gallery grid individual image movement
     galleryItems.forEach(item => {
       const img = item.querySelector('img');
@@ -794,46 +778,61 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // 13. PREMIUM BUDGET ESTIMATOR LOGIC
+  // 13. PREMIUM BESPOKE PLANNER LOGIC
   // ==========================================================================
   const calcOptionBtns = document.querySelectorAll('.calc-option-btn');
-  const priceRangeDisplay = document.getElementById('calc-price-range');
   const sumScope = document.getElementById('summary-scope');
   const sumFinish = document.getElementById('summary-finish');
   const sumHardware = document.getElementById('summary-hardware');
   const calcCtaSubmit = document.getElementById('calc-cta-submit');
   
-  function calculateBudget() {
-    if (!priceRangeDisplay) return;
-    
+  // Dynamic material previews database
+  const materialDatabase = {
+    'matte': {
+      title: 'Premium HDHMR Matte',
+      desc: 'Velvety, zero-fingerprint polymer skin engineered for high-traffic environments. Exceptional durability and clean architectural lines.',
+      background: '#8a847e'
+    },
+    'acrylic': {
+      title: 'High-Gloss Acrylic',
+      desc: 'Mirror-reflective surface that amplifies ambient lighting and visual depth. Perfect for high-end contemporary layouts.',
+      background: 'linear-gradient(135deg, #e3dfd8 0%, #b2aba0 100%)'
+    },
+    'veneer': {
+      title: 'Natural Wood Veneer',
+      desc: 'Hand-selected organic wood grains sliced into ultra-thin veneers, offering warm, unique, and editorial textures.',
+      background: 'linear-gradient(135deg, #8B5A2B 0%, #3E2723 100%)'
+    }
+  };
+
+  const prevThumb = document.getElementById('preview-texture-thumbnail');
+  const prevTitle = document.getElementById('preview-material-title');
+  const prevDesc = document.getElementById('preview-material-desc');
+  
+  function updateSpatialBrief() {
     // Find active selections
     const activeScope = document.querySelector('.calc-option-btn[data-step="scope"].active');
     const activeFinish = document.querySelector('.calc-option-btn[data-step="finish"].active');
     const activeHardware = document.querySelector('.calc-option-btn[data-step="hardware"].active');
     
-    if (!activeScope || !activeFinish || !activeHardware) return;
-    
-    const basePrice = parseInt(activeScope.getAttribute('data-price'), 10);
-    const finishMultiplier = parseFloat(activeFinish.getAttribute('data-multiplier'));
-    const hardwareMultiplier = parseFloat(activeHardware.getAttribute('data-multiplier'));
-    
-    // Core math
-    const baseEstimation = basePrice * finishMultiplier * hardwareMultiplier;
-    const lowRange = Math.round(baseEstimation * 0.9);
-    const highRange = Math.round(baseEstimation * 1.1);
-    
-    // Format to Indian Rupees currency format (e.g. ₹2,50,000)
-    function formatRupees(amount) {
-      return '₹' + amount.toLocaleString('en-IN');
+    if (activeScope && sumScope) {
+      sumScope.textContent = activeScope.querySelector('.calc-option-title').textContent;
     }
-    
-    // Update live displays
-    priceRangeDisplay.textContent = `${formatRupees(lowRange)} - ${formatRupees(highRange)}`;
-    
-    // Update visual summaries
-    sumScope.textContent = activeScope.querySelector('.calc-option-title').textContent;
-    sumFinish.textContent = activeFinish.querySelector('.calc-option-title').textContent;
-    sumHardware.textContent = activeHardware.querySelector('.calc-option-title').textContent;
+    if (activeFinish && sumFinish) {
+      sumFinish.textContent = activeFinish.querySelector('.calc-option-title').textContent;
+      
+      // Update dynamic live texture preview
+      const finishVal = activeFinish.getAttribute('data-value');
+      const matData = materialDatabase[finishVal];
+      if (matData) {
+        if (prevTitle) prevTitle.textContent = matData.title;
+        if (prevDesc) prevDesc.textContent = matData.desc;
+        if (prevThumb) prevThumb.style.background = matData.background;
+      }
+    }
+    if (activeHardware && sumHardware) {
+      sumHardware.textContent = activeHardware.querySelector('.calc-option-title').textContent;
+    }
   }
   
   // Bind click events to options
@@ -849,61 +848,31 @@ document.addEventListener('DOMContentLoaded', () => {
       // Add active class to clicked option
       btn.classList.add('active');
       
-      // Trigger live recalculation
-      calculateBudget();
+      // Trigger live updates
+      updateSpatialBrief();
     });
   });
   
-  // Bind Estimator CTA to Contact Form integration
+  // Bind CTA to WhatsApp Submission
   if (calcCtaSubmit) {
     calcCtaSubmit.addEventListener('click', () => {
       const activeScope = document.querySelector('.calc-option-btn[data-step="scope"].active');
-      const scopeVal = activeScope.getAttribute('data-value');
-      const scopeName = activeScope.querySelector('.calc-option-title').textContent;
+      const scopeName = activeScope ? activeScope.querySelector('.calc-option-title').textContent : 'N/A';
       
-      const finishName = document.querySelector('.calc-option-btn[data-step="finish"].active .calc-option-title').textContent;
-      const hardwareName = document.querySelector('.calc-option-btn[data-step="hardware"].active .calc-option-title').textContent;
-      const calculatedRange = priceRangeDisplay.textContent;
+      const activeFinish = document.querySelector('.calc-option-btn[data-step="finish"].active');
+      const finishName = activeFinish ? activeFinish.querySelector('.calc-option-title').textContent : 'N/A';
       
-      // Scroll smoothly to contact section
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth' });
-      }
+      const activeHardware = document.querySelector('.calc-option-btn[data-step="hardware"].active');
+      const hardwareName = activeHardware ? activeHardware.querySelector('.calc-option-title').textContent : 'N/A';
       
-      // Auto-populate form elements
-      const formSpace = document.getElementById('form-space');
-      const customSelectVal = document.getElementById('custom-select-value');
-      const formMessage = document.getElementById('form-message');
+      // Compile WhatsApp lead message
+      const messageText = `Hi SS Modulars! I have configured my bespoke spatial signature using your interactive planner and would like to request a quotation.\n\nMy Selections:\n- Spatial Scope: ${scopeName}\n- Material Finish: ${finishName}\n- Fittings & Hardware: ${hardwareName}\n\nPlease let me know the next steps for a detailed design brief. Thanks!`;
       
-      if (formSpace) {
-        // Map calculator value to form select values
-        let mappedVal = '';
-        if (scopeVal === 'kitchen') mappedVal = 'kitchen';
-        else if (scopeVal === 'wardrobes') mappedVal = 'wardrobes';
-        else mappedVal = 'full-home';
-        
-        formSpace.value = mappedVal;
-        formSpace.dispatchEvent(new Event('change'));
-        
-        // Sync custom select display text
-        if (customSelectVal) {
-          const matchedOption = document.querySelector(`.custom-option[data-value="${mappedVal}"]`);
-          if (matchedOption) {
-            customSelectVal.textContent = matchedOption.textContent;
-            customSelectVal.classList.remove('placeholder');
-            
-            // Sync selection styling
-            document.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
-            matchedOption.classList.add('selected');
-          }
-        }
-      }
+      // Direct WhatsApp link
+      const whatsappUrl = `https://wa.me/919381393020?text=${encodeURIComponent(messageText)}`;
       
-      // Populate custom brief message textarea
-      if (formMessage) {
-        formMessage.value = `Hi, I used your Instant Budget Estimator and calculated an estimated budget range of ${calculatedRange} for my ${scopeName}.\n\nConfiguration Detail:\n- Scope: ${scopeName}\n- Finish: ${finishName}\n- Fittings: ${hardwareName}\n\nI would like to schedule an expert design session at your studio to discuss plans.`;
-      }
+      // Open in a new tab/window
+      window.open(whatsappUrl, '_blank');
     });
   }
   
@@ -996,7 +965,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ==========================================================================
+  // 14. PRESTIGIOUS CLIENTS MODAL
+  // ==========================================================================
+  const prestigiousModal   = document.getElementById('prestigious-modal');
+  const btnOpenPrestigious = document.getElementById('btn-open-prestigious');
+  const btnCloseModal      = document.getElementById('prestigious-modal-close');
+  const prestigiousModalOverlay = document.getElementById('prestigious-modal-overlay');
+
+  function openPrestigiousModal() {
+    if (!prestigiousModal) return;
+    prestigiousModal.classList.add('is-open');
+    prestigiousModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    btnCloseModal && btnCloseModal.focus();
+  }
+
+  function closePrestigiousModal() {
+    if (!prestigiousModal) return;
+    prestigiousModal.classList.remove('is-open');
+    prestigiousModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    btnOpenPrestigious && btnOpenPrestigious.focus();
+  }
+
+  if (btnOpenPrestigious) {
+    btnOpenPrestigious.addEventListener('click', openPrestigiousModal);
+  }
+  if (btnCloseModal) {
+    btnCloseModal.addEventListener('click', closePrestigiousModal);
+  }
+  if (prestigiousModalOverlay) {
+    prestigiousModalOverlay.addEventListener('click', closePrestigiousModal);
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && prestigiousModal && prestigiousModal.classList.contains('is-open')) {
+      closePrestigiousModal();
+    }
+  });
+
   // Run once on load to initialize defaults
-  calculateBudget();
+  updateSpatialBrief();
 
 });
+
