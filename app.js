@@ -601,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Solid marble quartz backing panels matching premium countertops'
       ],
       images: [
-        'assets/service_crockery.png',
+        'assets/crockery_custom.png',
         'assets/crockery_detail_1.png',
         'assets/crockery_detail_2.png'
       ]
@@ -633,7 +633,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Comes standard with our comprehensive 10-year structural warranty'
       ],
       images: [
-        'assets/hero_living.png',
+        'assets/living_room_custom.jpeg',
         'assets/tv_detail_1.png',
         'assets/detail_finish.png'
       ]
@@ -998,9 +998,48 @@ document.addEventListener('DOMContentLoaded', () => {
   if (prestigiousModalOverlay) {
     prestigiousModalOverlay.addEventListener('click', closePrestigiousModal);
   }
+
+  // ==========================================================================
+  // 14.b CORPORATE CLIENTS MODAL
+  // ==========================================================================
+  const corporateModal   = document.getElementById('corporate-modal');
+  const btnOpenCorporate = document.getElementById('btn-open-corporate');
+  const btnCloseCorporateModal = document.getElementById('corporate-modal-close');
+  const corporateModalOverlay = document.getElementById('corporate-modal-overlay');
+
+  function openCorporateModal() {
+    if (!corporateModal) return;
+    corporateModal.classList.add('is-open');
+    corporateModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    btnCloseCorporateModal && btnCloseCorporateModal.focus();
+  }
+
+  function closeCorporateModal() {
+    if (!corporateModal) return;
+    corporateModal.classList.remove('is-open');
+    corporateModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    btnOpenCorporate && btnOpenCorporate.focus();
+  }
+
+  if (btnOpenCorporate) {
+    btnOpenCorporate.addEventListener('click', openCorporateModal);
+  }
+  if (btnCloseCorporateModal) {
+    btnCloseCorporateModal.addEventListener('click', closeCorporateModal);
+  }
+  if (corporateModalOverlay) {
+    corporateModalOverlay.addEventListener('click', closeCorporateModal);
+  }
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && prestigiousModal && prestigiousModal.classList.contains('is-open')) {
-      closePrestigiousModal();
+    if (e.key === 'Escape') {
+      if (prestigiousModal && prestigiousModal.classList.contains('is-open')) {
+        closePrestigiousModal();
+      }
+      if (corporateModal && corporateModal.classList.contains('is-open')) {
+        closeCorporateModal();
+      }
     }
   });
 
