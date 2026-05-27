@@ -175,18 +175,32 @@ body.hovering-link .custom-cursor-follower {
 }
 
 .brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.brand-text {
   font-family: var(--font-serif);
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
-.brand-logo span {
+.brand-dot {
   color: var(--accent-gold);
+}
+
+.header-logo-img {
+  height: 60px; /* Adjust height based on logo proportions */
+  width: auto;
+  object-fit: contain;
+  transition: transform var(--transition-fast);
+}
+
+.header-logo-img:hover {
+  transform: scale(1.05);
 }
 
 .nav-links {
@@ -3030,5 +3044,25 @@ section {
   .clients-grid {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+
+.footer-logo-img {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+  transition: opacity var(--transition-fast);
+}
+
+.footer-logo-img:hover {
+  opacity: 1;
+}
+
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
