@@ -569,7 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Custom pull-out trouser hanger arrays and tie storage trays'
       ],
       images: [
-        'assets/wardrobe_custom1.png',
+        'assets/wardrobe_custom3.png',
         'assets/wardrobe_custom2.png',
         'assets/wardrobe_custom.png'
       ]
